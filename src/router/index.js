@@ -1,22 +1,62 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-
+import WebHeader from '../views/layout/WebHeader'
+import WebFooter from '../views/layout/WebFooter'
+import BaseLayout from '../views/layout/BaseLayout'
+import Home from '../views/home/Home'
+import NewsItem from '../views/home/components/NewsItem'
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/Home',
+    name: 'Home',
+    component: Home,
+    redirect: { name: 'NewsItem' },
+    children: [
+      {
+        path: 'News',
+        name: 'NewsItem',
+        component: NewsItem,
+        props: true,
+      },
+      {
+        path: 'Trading',
+        name: 'NewsItem',
+        component: NewsItem,
+        props: true,
+      },
+      {
+        path: 'Graduation',
+        name: 'NewsItem',
+        component: NewsItem,
+        props: true,
+      },
+      {
+        path: 'Find',
+        name: 'NewsItem',
+        component: NewsItem,
+        props: true,
+      },
+      {
+        path: 'Corner',
+        name: 'NewsItem',
+        component: NewsItem,
+        props: true,
+      },
+    ],
+  },{
+    path: '/baselayout',
     name: 'home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: BaseLayout
+  },{
+    path: '/baselayout2',
+    name: 'home',
+    component:WebFooter
+  },{
+    path: '/baselayout3',
+    name: 'home',
+    component:WebHeader
   }
 ]
 
