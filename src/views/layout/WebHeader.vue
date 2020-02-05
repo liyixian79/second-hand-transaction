@@ -1,9 +1,3 @@
-/**
-* 模板头部
-* @file: LayoutHeader.vue
-* @author: Groot/grootgeek12@gmail.com
-* Date: 2018-12-27 21:50
-*/
 <template>
   <div :class="['LayoutHeader-container',{'hiddenSvg':isLogin||!showSvg}]">
     
@@ -57,7 +51,7 @@
                            type="primary"
                            icon="el-icon-edit"
                            circle
-                           @click="toAddNews"></el-button>
+                           @click="toAddNews('1')"></el-button>
               </el-tooltip>
             </div>
             <div v-if="!isLogin"
@@ -430,8 +424,10 @@
         this.searchValue='';
         this.searchList = [];
       },
-      toAddNews(){
+      toAddNews(i){
+				
         this.$router.push({path:'/News/add'})
+				console.log(i);
       }
     },
   };

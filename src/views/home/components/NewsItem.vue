@@ -73,14 +73,21 @@
     components: {},
     data() {
       return {
-        data:[],
+        data:[
+					{
+						_id:1,
+						title:"商品1",
+						content:"商品1",
+						author:"aaa",
+						createTime:2020
+						}],
         filterForm:{
           sort:-1,
           page:1,
           pageSize:6,
           type:-1
         },
-        totalCount:0,
+        totalCount:1,
         NEWS_TYPE,
       };
     },
