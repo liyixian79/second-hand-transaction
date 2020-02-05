@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<div :class="['LayoutHeader-container',{'hiddenSvg':isLogin||!showSvg}]">
 
 		<!--首页导航 start-->
@@ -156,6 +157,224 @@
 		<!--登录注册弹窗 end-->
 
 	</div>
+=======
+  <div :class="['LayoutHeader-container',{'hiddenSvg':isLogin||!showSvg}]">
+    
+    <!--首页导航 start-->
+    <div class="nav-top">
+      <div class="home-top"></div>
+      <div class="home-header-container">
+        <div class="home-header">
+          <div class="header-title">
+            <div class="header-logo" @click="toHome">
+              <img src="../../assets/home/YoYo-logo.png">
+            </div>
+            <div class="header-nav">
+              <ul class="nav-ul">
+                <li class="li-item first"
+                    @click="toHome">首页</li>
+                <li class="li-item">问答</li>
+                <li class="li-item">专栏</li>
+                <li class="li-item">讲堂</li>
+                <li class="li-item">发现</li>
+              </ul>
+            </div>
+          </div>
+          <div class="header-search">
+            <el-select
+                    v-model="searchValue"
+                    multiple
+                    filterable
+                    remote
+                    clearable
+                    reserve-keyword
+                    placeholder="请输入关键词"
+                    :remote-method="remoteMethod"
+                    :loading="loading"
+                    @change="handleSelect">
+              <el-option
+                      v-for="item in searchList"
+                      :key="item._id"
+                      :label="item.title"
+                      :value="item._id">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="header-user">
+            <div class="user-news">
+              <el-tooltip class="item"
+                          effect="dark"
+                          content="发帖"
+                          placement="bottom">
+                <el-button size="small"
+                           type="primary"
+                           icon="el-icon-edit"
+                           circle
+                           @click="toAddNews('1')"></el-button>
+              </el-tooltip>
+            </div>
+            <div v-if="!isLogin"
+                 class="user-btn" >
+              <div class="user-login" @click="openDialog('login')">
+                立即登录
+              </div>
+              <div class="user-register" @click="openDialog('register')">
+                免费注册
+              </div>
+            </div>
+            <el-dropdown v-else>
+                <div class="user-img">
+                  <template v-if="user.imageUrl">
+                    <img :src='`data:image/png;base64,${user.imageUrl}`'>
+                  </template>
+                  <template v-else>
+                    <img  v-if="+user.sex===0"
+                          src="../../assets/home/头像 男孩.png">
+                    <img  v-else
+                          src="../../assets/home/头像 女孩.png">
+                  </template>
+                </div>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="toUser('userInfo')">个人中心</el-dropdown-item>
+                  <el-dropdown-item @click.native="toUser('messages')">我的消息</el-dropdown-item>
+                  <el-dropdown-item @click.native="toUser('like')">我赞过的</el-dropdown-item>
+                  <el-dropdown-item @click.native="toUser('news')">我的帖子</el-dropdown-item>
+                  <el-dropdown-item style="color: #F56C6C"
+                                    @click.native="loginOut">注销</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--首页导航 end-->
+    
+    <!--介绍transiton start-->
+    <transition name="el-zoom-in-top">
+      <div class="home-svg" v-if="!isLogin&&showSvg">
+        <div class="svg-info">
+          <div class="info-title">
+            在 YoYo，转手闲置、淘换宝贝
+          </div>
+          <div class="info-content">
+            每一天，我们都在促成师大校园内小伙伴们闲置物品的相互交易，并为他们在校内社交、问题求助上提供帮助。
+          </div>
+        </div>
+        <div class="svg-user">
+          <div class="register user" @click="openDialog('register')">
+            免费注册
+          </div>
+          <div class="login user" @click="openDialog('login')">
+            立即登录
+          </div>
+        </div>
+        <div class="close" @click="showSvg=false">
+          x
+        </div>
+      </div>
+    </transition>
+    <!--介绍transiton end-->
+    
+    <!--登录注册弹窗 start-->
+    <div class="user-dialog">
+      <el-dialog :visible.sync="showUserDialog"
+                 :close-on-click-modal="false"
+                 :show-close="false"
+                 :title="activeTab==='login'?'用户登录':'用户注册'"
+                 width=600px
+                 center>
+        <el-tabs v-model="activeTab">
+          <el-tab-pane label="登录" name="login" class="login">
+            <el-form label-position="left"
+                     :model="loginForm"
+                     :rules="loginRules"
+                     ref="loginForm"
+                     style="margin-top: 20px">
+              <el-form-item prop="name">
+                <el-input v-model="loginForm.name"
+                          placeholder="请输入账户名">
+                  <template slot="prepend"><i class="fa fa-user"></i></template>
+                </el-input>
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input v-model="loginForm.password"
+                          type="password"
+                          placeholder="请输入密码">
+                  <template slot="prepend"><i class="fa fa-lock"></i> </template>
+                </el-input>
+              </el-form-item>
+              <div class="tips">
+                未注册账号？
+                <span style="color: orangered;cursor: pointer"
+                      @click="activeTab='register'">立即注册</span>
+              </div>
+              <div class="form-btn">
+                <el-button @click="closeDialog"
+                           type="danger">取消</el-button>
+                <el-button type="primary"
+                           @click="login">登录</el-button>
+              </div>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="注册" name="register">
+            <el-form  label-position="left"
+                      :model="registerForm"
+                      :rules="registerRules"
+                      ref="registerForm"
+                      style="margin-top: 20px"
+                      label-width="80px">
+              <el-form-item prop="name" label="用户名">
+                <el-input v-model="registerForm.name"
+                          placeholder="请输入用户名">
+                </el-input>
+              </el-form-item>
+              <el-form-item  prop="password" label="密码">
+                <el-input type="password"
+                          v-model="registerForm.password"
+                          placeholder="请输入密码 不少于6位字符">
+                </el-input>
+              </el-form-item>
+              <el-form-item  label="确认密码" prop="checkpassword">
+                <el-input type="password"
+                          v-model="registerForm.checkpassword"
+                          placeholder="请再次输入密码">
+                </el-input>
+              </el-form-item>
+              <el-form-item prop="sex" label="性别">
+                <el-radio v-model="registerForm.sex" :label="0">男</el-radio>
+                <el-radio v-model="registerForm.sex" :label="1">女</el-radio>
+              </el-form-item>
+              <el-form-item prop="degree" label="年级">
+                <el-select v-model="registerForm.degree">
+                  <el-option
+                          v-for="item in degreeOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="简介">
+                <el-input type="textarea"
+                          v-model="registerForm.remark"
+                          placeholder="向大家介绍一下自己吧~">
+                </el-input>
+              </el-form-item>
+              <div class="form-btn">
+                <el-button @click="closeDialog"
+                           type="danger">取消</el-button>
+                <el-button type="primary"
+                           @click="register">注册</el-button>
+              </div>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+      </el-dialog>
+    </div>
+    <!--登录注册弹窗 end-->
+    
+  </div>
+>>>>>>> 2acd73a3081e64eda2162828bc221bd265ba3640
 </template>
 
 <script>
@@ -378,6 +597,7 @@
         } else {
           this.searchList = [];
         } */
+<<<<<<< HEAD
 			},
 			handleSelect(val) {
 				this.$router.push({
@@ -395,6 +615,21 @@
 			}
 		},
 	};
+=======
+      },
+      handleSelect(val){
+        this.$router.push({path:`news/id/${val}`});
+        this.searchValue='';
+        this.searchList = [];
+      },
+      toAddNews(i){
+				
+        this.$router.push({path:'/News/add'})
+				console.log(i);
+      }
+    },
+  };
+>>>>>>> 2acd73a3081e64eda2162828bc221bd265ba3640
 </script>
 
 <style lang="scss" scoped>
